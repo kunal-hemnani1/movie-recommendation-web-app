@@ -60,6 +60,33 @@ export interface MovieDetail {
 
 export interface RecommendedMovieDetail {
   id: string;
-  imdb_id: string;
+  title: string;
   poster_path: string;
+  vote_average: number;
+}
+
+
+export interface GenreOption {
+  id: number;
+  name: string;
+}
+
+export interface DiscoverMovie {
+  id: number;
+  title: string;
+  poster_path: string | null;
+  vote_average: number;
+  vote_count: number;
+  release_date: string;
+  genre_ids: number[];
+  backdrop_path?: string | null;
+  overview?: string;
+  runtime?: number;
+}
+
+export interface DiscoverResponse {
+  page: number;
+  results: DiscoverMovie[];
+  total_pages: number;
+  total_results: number;
 }

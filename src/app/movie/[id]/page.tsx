@@ -1,27 +1,33 @@
 import { MovieDetail, RecommendedMovieDetail } from "@/types/movieResponseType"
 import React, { JSX, JSXElementConstructor, Suspense } from "react"
+import MovieCard from "@/components/MovieCard"
 
 interface PageProps {
     params : Promise<{id:string}>
 }
 
+const BASE_URL = 'https://vigilant-waffle-v64wxqxg659jcpjx6-8000.app.github.dev'
+
+
 async function get_movie_details(id : string) : Promise<MovieDetail | "error">{
     try {
-        const url = `https://vigilant-waffle-v64wxqxg659jcpjx6-8000.app.github.dev/movie?id=${id}`
+        const url = `${BASE_URL}/movie?id=${id}`
+        console.log(url)
         const res = await fetch(url)
         const resp = await res.json()
         return resp;
-    } catch {
+    } catch(err) {
+        console.log(err)
         return "error"
     }
 }
 
-async function get_movie_recommendations(id : number) : Promise<RecommendedMovieDetail | "error"> {
+async function get_movie_recommendations(id : number) : Promise<RecommendedMovieDetail[] | "error"> {
     try {
-        const url = `http://localhost:8000/recommend`
+        const url = `${BASE_URL}/recommend`
         const payload = {
             id : id,
-            top_n : 10
+            top_n : 20
         }
         const res = await fetch(url, {
             method: 'POST',
@@ -33,7 +39,7 @@ async function get_movie_recommendations(id : number) : Promise<RecommendedMovie
         });
         const data = await res.json()
         console.log(data)
-        return data
+        return data.results
     } catch {
         return "error"
     }
@@ -51,7 +57,7 @@ function TMDBImage({ image_path ,className,width }:
     if(width!="original")
         width = "w" + width
 
-    console.log(image_path)
+    console.log(`https://image.tmdb.org/t/p/${width}${image_path}`)
     
     return (
         <img
@@ -99,60 +105,73 @@ export async function Content({params}:PageProps){
         return <h1> error page </h1>
     if(!movie_details)
         return "loading"
+
     console.log(movie_details)
     const recommend_movies = await get_movie_recommendations(Number(id));
-    console.log(recommend_movies)
-    return <div className="flex p-4 bg-black relative gap-4 sm:gap-10 md:gap-16 lg:gap-24 text-white">
-        <div className="absolute z-1 inset-0 inset-x-15 ">
-            <div className="bg-linear-to-r from-black via-black/35 to-black absolute inset-0"></div>
-            <TMDBImage className="h-full w-full object-cover" width="original" image_path={movie_details.backdrop_path} ></TMDBImage>
-        </div>
-
-        <div className={"z-2"}>
-            <TMDBImage width="400" className="border-2 border-white/10" image_path={movie_details.poster_path}></TMDBImage>
-        </div>
+    return <div>
         
-        <div className="flex-1 lg:max-w-300  z-3 lg:my-20">
-            <div className="lg:flex lg:justify-between items-center">
-                <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-7xl font-bold"> {movie_details.title} </h2>
-                <div className="lg:flex gap-1">
-                    <Badge measure="Vote Average"
-                          emoji="📍"
-                        className="bg-black/20 z-100"> 
+        <div className="flex p-4 bg-black relative gap-4 sm:gap-10 md:gap-16 lg:gap-24 text-white">
+            <div className="absolute z-1 inset-0 inset-x-15 ">
+                <div className="bg-linear-to-r from-black via-black/35 to-black absolute inset-0"></div>
+                <TMDBImage className="h-full w-full object-cover" width="original" image_path={movie_details.backdrop_path} ></TMDBImage>
+            </div>
 
-                        {Math.round(movie_details.vote_average*10)/10}/100 
-                    </Badge>
-                    <Badge measure="Votes"
-                          emoji="👥"
-                        className="bg-black/20 z-100"> 
+            <div className={"z-2"}>
+                <TMDBImage width="400" className="border-2 border-white/10" image_path={movie_details.poster_path}></TMDBImage>
+            </div>
+            
+            <div className="flex-1 lg:max-w-300 z-3 lg:my-20">
+                <div className="lg:flex lg:justify-between items-center">
+                    <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-7xl font-bold"> {movie_details.title} </h2>
+                    <div className="lg:flex gap-1">
+                        <Badge measure="Vote Average"
+                            emoji="📍"
+                            className="bg-black/20 z-100"> 
 
-                        {formatCount(movie_details.vote_count)}+
-                    </Badge>
-                    <Badge measure="Popularity"
-                          emoji="👀"
-                        className="bg-black/20 z-100"> 
+                            {Math.round(movie_details.vote_average*10)/10}/10
+                        </Badge>
+                        <Badge measure="Votes"
+                            emoji="👥"
+                            className="bg-black/20 z-100"> 
 
-                        {Math.round(movie_details.popularity)}/100 
-                    </Badge>
-                    {/* {movie_details.popularity} */}
+                            {formatCount(movie_details.vote_count)}+
+                        </Badge>
+                        <Badge measure="Popularity"
+                            emoji="👀"
+                            className="bg-black/20 z-100"> 
 
+                            {Math.round(movie_details.popularity)}
+                        </Badge>
+                        {/* {movie_details.popularity} */}
+
+                    </div>
+                </div>
+                <div className="mb-10">
+                    <h5 className=" mt-3 text-xl text-neutral-500">{movie_details.release_date.substring(0,4)} </h5>
+                    <p className="text-xl text-neutral-300 my-1"> {Math.floor(movie_details.runtime/60)} hrs {(movie_details.runtime%60)} mins </p>
+                </div>
+                <div className="flex gap-2 mb-6">
+                    {
+                        movie_details.genres.map((genre)=>{
+                            return <div key={genre.id} className="border-2 rounded-full px-4">
+                                {genre.name}
+                            </div>
+                        })
+                    }
+                </div>
+                <div className="lg:max-w-lg lg:text-xl">
+                    <p> {movie_details.overview} </p>
                 </div>
             </div>
-            <div className="mb-10">
-                <h5 className=" mt-3 text-xl text-neutral-500">{movie_details.release_date.substring(0,4)} </h5>
-                <p className="text-xl text-neutral-300 my-1"> {Math.floor(movie_details.runtime/60)} hrs {(movie_details.runtime%60)} mins </p>
+        </div>
+        <div className="bg-black text-white">
+            <div className="lg:min-h-20 lg:text-2xl py-10 px-20 font-bold">
+                Similar Movies 
             </div>
-            <div className="flex gap-2 mb-6">
-                {
-                    movie_details.genres.map((genre)=>{
-                        return <div key={genre.id} className="border-2 rounded-full px-4">
-                            {genre.name}
-                        </div>
-                    })
-                }
-            </div>
-            <div className="lg:max-w-lg lg:text-xl">
-                <p> {movie_details.overview} </p>
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                {recommend_movies!="error" && recommend_movies.map((movie,idx)=>{
+                    return <MovieCard key={idx} movie={movie}></MovieCard>
+                })}
             </div>
         </div>
     </div>
