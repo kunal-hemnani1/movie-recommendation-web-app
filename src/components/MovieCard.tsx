@@ -2,7 +2,7 @@
 "use client"
 import type { DiscoverMovie, MovieDetail, RecommendedMovieDetail } from "@/types/movieResponseType";
 import { useRouter } from "next/navigation";
-
+import { addMovieToWatchlist } from "@/lib/watchlist";
 interface MovieCardProps {
   movie: MovieDetail | RecommendedMovieDetail | DiscoverMovie;
   onClick?: (movie: MovieDetail) => void;
@@ -82,6 +82,17 @@ export default function MovieCard({
             {Number.isFinite(rating) ? rating.toFixed(1) : "N/A"}
           </span>
         </div>
+        
+        <button onClick={async () => {
+          try {
+            await addMovieToWatchlist(movie);
+            alert("Added to your watchlist");
+          } catch (error) {
+            alert(error instanceof Error ? error.message : "Could not add movie");
+          }
+        }}>
+          Add to watchlist
+        </button>
 
         {/* Release year */}
         <span className="absolute bottom-2 right-2 rounded-md bg-black/75 px-2 py-1 text-xs text-zinc-200 backdrop-blur">
