@@ -83,16 +83,6 @@ export default function MovieCard({
           </span>
         </div>
         
-        <button onClick={async () => {
-          try {
-            await addMovieToWatchlist(movie);
-            alert("Added to your watchlist");
-          } catch (error) {
-            alert(error instanceof Error ? error.message : "Could not add movie");
-          }
-        }}>
-          Add to watchlist
-        </button>
 
         {/* Release year */}
         <span className="absolute bottom-2 right-2 rounded-md bg-black/75 px-2 py-1 text-xs text-zinc-200 backdrop-blur">

@@ -8,7 +8,10 @@ import {
   CalendarDays,
   Compass,
   Home,
+  Bookmark,
+  Bolt,
 } from "lucide-react";
+import AuthButton from "./AuthButton";
 
 const links = [
   {label: "Home",href:"/home",icon: Home},
@@ -18,6 +21,8 @@ const links = [
   { label: "Popular", href: "/movies/popular", icon: House },
   { label: "Now Playing", href: "/movies/now-playing", icon: Clapperboard },
   { label: "Upcoming", href: "/movies/upcoming", icon: CalendarDays },
+  { label : "Watchlist", href:"/watchlist",icon:Bookmark},
+  { label: "Preferences", href:"/preferences", icon:Bolt}
 ];
 
 export default function Sidebar() {
@@ -36,6 +41,7 @@ export default function Sidebar() {
       </p>
 
       <nav className="flex flex-col gap-2">
+        <AuthButton></AuthButton>
         {links.map(({ label, href, icon: Icon }) => (
           <a
             key={label}

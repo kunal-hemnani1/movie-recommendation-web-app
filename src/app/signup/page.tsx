@@ -48,7 +48,7 @@ export default function SignupPage() {
   return (
     <main className="mx-auto min-h-screen max-w-3xl px-4 py-12 text-white">
       <div className="mb-8 text-center">
-        <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-blue-400">Join MovieVerse</p>
+        <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-blue-400">Join CineVerse</p>
         <h1 className="text-3xl font-bold sm:text-4xl">Create your account</h1>
         <p className="mt-3 text-gray-400">Choose your favorite genres so we can tailor your movie experience.</p>
       </div>

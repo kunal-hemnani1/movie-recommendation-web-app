@@ -1,6 +1,8 @@
 import { MovieDetail, RecommendedMovieDetail } from "@/types/movieResponseType"
 import React, { JSX, JSXElementConstructor, Suspense } from "react"
 import MovieCard from "@/components/MovieCard"
+import { addMovieToWatchlist } from "@/lib/watchlist"
+import AddToWatchListButton from "@/components/AddToWatchListButton"
 
 interface PageProps {
     params : Promise<{id:string}>
@@ -162,6 +164,8 @@ export async function Content({params}:PageProps){
                 <div className="lg:max-w-lg lg:text-xl">
                     <p> {movie_details.overview} </p>
                 </div>
+                <AddToWatchListButton movie={movie_details}></AddToWatchListButton>
+
             </div>
         </div>
         <div className="bg-black text-white">
