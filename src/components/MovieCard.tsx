@@ -4,10 +4,10 @@ import type { DiscoverMovie, MovieDetail, RecommendedMovieDetail } from "@/types
 import { useRouter } from "next/navigation";
 import { addMovieToWatchlist } from "@/lib/watchlist";
 interface MovieCardProps {
-  movie: MovieDetail | RecommendedMovieDetail | DiscoverMovie;
+  movie: any;
   onClick?: (movie: MovieDetail) => void;
-  showrank: boolean;
-  num: number;
+  showrank: boolean | null;
+  num: number | null;
 }
 
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w342";
@@ -116,7 +116,7 @@ export default function MovieCard({
           <p className="truncate pt-1 text-xs text-zinc-500">
             {movie.genres
               .slice(0, 2)
-              .map((genre) => genre.name)
+              .map((genre:any) => genre.name)
               .join(" · ")}
           </p>
         )}

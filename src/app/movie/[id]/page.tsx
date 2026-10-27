@@ -14,12 +14,12 @@ const BASE_URL = 'https://vigilant-waffle-v64wxqxg659jcpjx6-8000.app.github.dev'
 async function get_movie_details(id : string) : Promise<MovieDetail | "error">{
     try {
         const url = `${BASE_URL}/movie?id=${id}`
-        console.log(url)
+        // console.log(url)
         const res = await fetch(url)
         const resp = await res.json()
         return resp;
     } catch(err) {
-        console.log(err)
+        // console.log(err)
         return "error"
     }
 }
@@ -40,7 +40,7 @@ async function get_movie_recommendations(id : number) : Promise<RecommendedMovie
             ) // Converts JavaScript object to a JSON string
         });
         const data = await res.json()
-        console.log(data)
+        // console.log(data)
         return data.results
     } catch {
         return "error"
@@ -59,7 +59,7 @@ function TMDBImage({ image_path ,className,width }:
     if(width!="original")
         width = "w" + width
 
-    console.log(`https://image.tmdb.org/t/p/${width}${image_path}`)
+    // console.log(`https://image.tmdb.org/t/p/${width}${image_path}`)
     
     return (
         <img
@@ -108,7 +108,7 @@ export async function Content({params}:PageProps){
     if(!movie_details)
         return "loading"
 
-    console.log(movie_details)
+    // console.log(movie_details)
     const recommend_movies = await get_movie_recommendations(Number(id));
     return <div>
         
@@ -174,7 +174,7 @@ export async function Content({params}:PageProps){
             </div>
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                 {recommend_movies!="error" && recommend_movies.map((movie,idx)=>{
-                    return <MovieCard key={idx} movie={movie}></MovieCard>
+                    return <MovieCard key={idx} movie={movie} showrank={false} num={0}></MovieCard>
                 })}
             </div>
         </div>
