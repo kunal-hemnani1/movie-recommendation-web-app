@@ -51,7 +51,7 @@ export default function MovieGrid({
                    lg:grid-cols-4 xl:grid-cols-5"
       >
         {movies.map((movie) => (
-          <MovieCard key={movie.id} movie={movie} />
+          <MovieCard key={movie.id} movie={movie} showrank={false} num={0}/>
         ))}
       </div>
 

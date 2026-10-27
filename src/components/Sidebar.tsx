@@ -19,7 +19,7 @@ const links = [
   { label: "Trending", href: "/movies/trending", icon: TrendingUp },
   { label: "Top Rated", href: "/movies/toprated", icon: Star },
   { label: "Popular", href: "/movies/popular", icon: House },
-  { label: "Now Playing", href: "/movies/now-playing", icon: Clapperboard },
+  { label: "Now Playing", href: "/movies/nowplaying", icon: Clapperboard },
   { label: "Upcoming", href: "/movies/upcoming", icon: CalendarDays },
   { label : "Watchlist", href:"/watchlist",icon:Bookmark},
   { label: "Preferences", href:"/preferences", icon:Bolt}

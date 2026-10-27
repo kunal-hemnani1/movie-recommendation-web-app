@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 
@@ -25,7 +25,13 @@ const regions = [
   { value: "JP", label: "Japan" },
 ];
 
-export default function MovieCategoryPage() {
+export default function Page(){
+  return <Suspense>
+     <MovieCategoryPage></MovieCategoryPage>
+  </Suspense>
+}
+
+export function MovieCategoryPage() {
   const params = useParams<{ category: string }>();
   const category = params.category;
 
